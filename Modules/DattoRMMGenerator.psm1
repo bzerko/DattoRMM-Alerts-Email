@@ -1,7 +1,7 @@
 
 function Get-DRMMAlertColour {
     <#
-    This function returns the datto themed alert priority colours.
+    This function returns the datto themed alert piority colours.
     #>
     param (
         $Priority
@@ -45,15 +45,16 @@ function Get-DRMMAlertDetailsSection {
         $DocLinkHTML = ''
     }
     
-    $Colour = Get-DRMMAlertColour -Priority $Alert.Priority
+    $Colour = Get-DRMMAlertColour -Piority $Alert.Priority
 
     $SectionHTML = @"
-    <!-- Alert Details HTML Start -->
+    <!-- Alert Detaills HTML Start -->
     <tr>
         <td style="padding: 20px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #ffffff;">
             <h1
                 style="margin: 0 0 10px; font-size: 25px; line-height: 30px; font-weight: normal; $Colour">
                 $($Alert.priority) Alert - $($Device.siteName) - $($Device.hostname)</h1>
+            <h3>Component Monitor - [Failure Test Monitor] - Result: A Test Alert Was Created:</h3>
             <p style="margin: 0 0 10px;">$(Get-AlertDescription -Alert $Alert)
             $($Alert.diagnostics)
             </p>
@@ -64,50 +65,39 @@ function Get-DRMMAlertDetailsSection {
         </td>
     </tr>
 
-<tr>
-    <td align="center" valign="top" style="background-color: #222222; padding-bottom: 20px;">
-        <table border="0" cellspacing="0" cellpadding="0" align="center" style="width: auto;">
-            <tr>
-                <td style="padding: 0 5px;">
-                    <a class="button-a button-a-primary" target="_blank"
-                        href="https://$($DattoPlatform)docs"
-                        style="background: #333333; border: 1px solid #000000; font-family: sans-serif; font-size: 15px; line-height: 15px; text-decoration: none; padding: 13px 17px; color: #ffffff; display: block; border-radius: 4px;">
-                        View Docs
-                    </a>
-                </td>
-                <td style="padding: 0 5px;">
-                    <a class="button-a button-a-primary" target="_blank"
-                        href="https://$($DattoPlatform)rmm.centrastage.net/alert/$($Alert.alertUid)"
-                        style="background: #333333; border: 1px solid #000000; font-family: sans-serif; font-size: 15px; line-height: 15px; text-decoration: none; padding: 13px 17px; color: #ffffff; display: block; border-radius: 4px;">
-                        View Alert
-                    </a>
-                </td>
-                <td style="padding: 0 5px;">
-                    <a class="button-a button-a-primary" target="_blank"
-                        href="https://$($DattoPlatform)rmm.centrastage.net/device/$($Device.id)/$($Device.hostname)"
-                        style="background: #333333; border: 1px solid #000000; font-family: sans-serif; font-size: 15px; line-height: 15px; text-decoration: none; padding: 13px 17px; color: #ffffff; display: block; border-radius: 4px;">
-                        View Device
-                    </a>
-                </td>
-                <td style="padding: 0 5px;">
-                    <a class="button-a button-a-primary" target="_blank"
-                        href="https://$($DattoPlatform)rmm.centrastage.net/site/$($Device.siteId)"
-                        style="background: #333333; border: 1px solid #000000; font-family: sans-serif; font-size: 15px; line-height: 15px; text-decoration: none; padding: 13px 17px; color: #ffffff; display: block; border-radius: 4px;">
-                        View Site
-                    </a>
-                </td>
-                <td style="padding: 0 5px;">
-                    <a class="button-a button-a-primary" target="_blank"
-                        href="https://$($DattoPlatform).centrastage.net/csm/remote/rto/$($Device.id)"
-                        style="background: #333333; border: 1px solid #000000; font-family: sans-serif; font-size: 15px; line-height: 15px; text-decoration: none; padding: 13px 17px; color: #ffffff; display: block; border-radius: 4px;">
-                        Web Remote
-                    </a>
-                </td>
-            </tr>
-        </table>
-    </td>
-</tr>
-
+    <tr>
+        <td align="center" valign="top" style="font-size:0; background-color: #222222; padding-bottom: 20px;">
+            $DocLinkHTML
+            <div style="display:inline-block; margin: 2px; max-width: 128px; min-width:100px; vertical-align:top; width:100%;"
+                class="stack-column">
+                <a class="button-a button-a-primary" target="_blank"
+                    href="https://$($DattoPlatform)rmm.centrastage.net/alert/$($Alert.alertUid)"
+                    style="background: #333333; border: 1px solid #000000; font-family: sans-serif; font-size: 15px; line-height: 15px; text-decoration: none; padding: 13px 17px; color: #ffffff; display: block; border-radius: 4px;">View
+                    Alert</a>
+            </div>
+            <div style="display:inline-block; margin: 2px; max-width: 128px; min-width:100px; vertical-align:top; width:100%;"
+                class="stack-column">
+                <a class="button-a button-a-primary" target="_blank"
+                    href="https://$($DattoPlatform)rmm.centrastage.net/device/$($Device.id)/$($Device.hostname)"
+                    style="background: #333333; border: 1px solid #000000; font-family: sans-serif; font-size: 15px; line-height: 15px; text-decoration: none; padding: 13px 17px; color: #ffffff; display: block; border-radius: 4px;">View
+                    Device</a>
+            </div>
+            <div style="display:inline-block; margin: 2px; max-width: 128px; min-width:100px; vertical-align:top; width:100%;"
+                class="stack-column">
+                <a class="button-a button-a-primary" target="_blank"
+                    href="https://$($DattoPlatform)rmm.centrastage.net/site/$($Device.siteId)"
+                    style="background: #333333; border: 1px solid #000000; font-family: sans-serif; font-size: 15px; line-height: 15px; text-decoration: none; padding: 13px 17px; color: #ffffff; display: block; border-radius: 4px;">View
+                    Site</a>
+            </div>
+            <div style="display:inline-block; margin: 2px; max-width: 128px; min-width:100px; vertical-align:top; width:100%;"
+                class="stack-column">
+                <a class="button-a button-a-primary" target="_blank"
+                    href="https://$($DattoPlatform).centrastage.net/csm/remote/rto/$($Device.id)"
+                    style="background: #333333; border: 1px solid #000000; font-family: sans-serif; font-size: 15px; line-height: 15px; text-decoration: none; padding: 13px 17px; color: #ffffff; display: block; border-radius: 4px;">Web
+                    Remote</a>
+            </div>
+        </td>
+    </tr>
 
     
     <!-- Alert Details HTML End -->
@@ -135,7 +125,7 @@ function Get-DRMMDeviceDetailsSection {
     )
 
 
-   $DeviceDetailsHtml = @"
+    $DeviceDetailsHtml = @"
     <!-- Device Details HTML Start -->
     <tr>
         <td align="center" valign="top" style="font-size:0; padding-bottom: 10px; background-color: #222222;">
@@ -225,54 +215,53 @@ function Get-DRMMDeviceStatusSection {
     $DeviceStatusHTML = @"
 
         <!-- Device Status : BEGIN -->
-<tr>
-    <td style="padding: 20px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #ffffff;">
-        <!-- CPU Usage Block -->
-        <div style="display:inline-block; width:49%; min-width:200px; max-width:330px; vertical-align:top;" class="stack-column">
-            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="font-size: 14px; text-align: left;">
-                <tr>
-                    <td style="padding: 10px;">
-                        <h2 style="color: #ffffff; margin-bottom: 5px;">CPU Usage $($CPUUse)%</h2>
-                        <table style="font-family: sans-serif; font-size: 15px; line-height: 20px; color: #ffffff; width: 100%;">
-                            <!-- Your CPU usage table data (replace $CPUTable with actual content) -->
-                            $CPUTable
-                        </table>
-                    </td>
-                </tr>
-            </table>
-        </div>
-
-        <!-- RAM Usage Block -->
-        <div style="display:inline-block; width:49%; min-width:200px; max-width:330px; vertical-align:top;" class="stack-column">
-            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="font-size: 14px; text-align: left;">
-                <tr>
-                    <td style="padding: 10px;">
-                        <h2 style="color: #ffffff; margin-bottom: 5px;">RAM Usage $($RAMUse)%</h2>
-                        <table style="font-family: sans-serif; font-size: 15px; line-height: 20px; color: #ffffff; width: 100%;">
-                            <!-- Your RAM usage table data (replace $RAMTable with actual content) -->
-                            $RAMTable
-                        </table>
-                    </td>
-                </tr>
-            </table>
-        </div>
-    </td>
-</tr>
-
-<!-- Disk Usage Block -->
-<tr>
-    <td style="padding: 10px 20px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #ffffff;">
-        <h2 style="color: #ffffff; margin-bottom: 5px;">Disk Use</h2>
-        <div style="width: 100%; display: block;">
-            <table style="font-family: sans-serif; font-size: 15px; line-height: 20px; color: #ffffff; width: 100%;">
-                <!-- Your Disk usage table data (replace $DiskHTML with actual content) -->
-                $DiskHTML
-            </table>
-        </div>
-    </td>
-</tr>
-<!-- Device Status : END -->
-
+        <tr>
+        <td style="padding: 20px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #ffffff;">
+            <div style="display:inline-block; margin: 0 -1px; width:100%; min-width:200px; max-width:330px; vertical-align:top;"
+                class="stack-column">
+                <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                    <tr>
+                        <td style="padding: 10px;">
+                            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%"
+                                style="font-size: 14px; text-align: left;">
+                                <tr>
+                                    <td style="font-family: sans-serif; font-size: 15px; line-height: 20px; color: #ffffff; padding-top: 10px;"
+                                        class="stack-column-center">
+                                        <h2>CPU Usage $($CPUUse)%</h2>
+                                        $CPUTable
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div style="display:inline-block; margin: 0 -1px; width:100%; min-width:200px; max-width:330px; vertical-align:top;"
+                class="stack-column">
+                <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                    <tr>
+                        <td style="padding: 10px;">
+                            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%"
+                                style="font-size: 14px;text-align: left;">
+                                <tr>
+                                    <td style="font-family: sans-serif; font-size: 15px; line-height: 20px; color: #ffffff; padding-top: 10px;"
+                                        class="stack-column-center">
+                                        <h2>RAM Usage $($RAMUse)%</h2>
+                                        $RAMTable
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div style="padding: 10px 10px 0px 10px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #ffffff;">
+                <h2>Disk Use</h3>
+                    $DiskHTML
+            </div>
+            </td>
+        </tr>
+        <!-- Device Status : END -->        
 
 "@
 
