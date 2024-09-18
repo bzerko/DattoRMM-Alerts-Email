@@ -70,6 +70,13 @@ function Get-DRMMAlertDetailsSection {
             <tr>
                 <td style="padding: 0 5px;">
                     <a class="button-a button-a-primary" target="_blank"
+                        href="https://$($DattoPlatform)docs"
+                        style="background: #333333; border: 1px solid #000000; font-family: sans-serif; font-size: 15px; line-height: 15px; text-decoration: none; padding: 13px 17px; color: #ffffff; display: block; border-radius: 4px;">
+                        View Docs
+                    </a>
+                </td>
+                <td style="padding: 0 5px;">
+                    <a class="button-a button-a-primary" target="_blank"
                         href="https://$($DattoPlatform)rmm.centrastage.net/alert/$($Alert.alertUid)"
                         style="background: #333333; border: 1px solid #000000; font-family: sans-serif; font-size: 15px; line-height: 15px; text-decoration: none; padding: 13px 17px; color: #ffffff; display: block; border-radius: 4px;">
                         View Alert
@@ -100,7 +107,6 @@ function Get-DRMMAlertDetailsSection {
         </table>
     </td>
 </tr>
-
 
 
     
