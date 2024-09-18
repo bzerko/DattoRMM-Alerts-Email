@@ -135,11 +135,11 @@ function Get-DRMMDeviceDetailsSection {
     )
 
 
-    $DeviceDetailsHtml = @"
-   <!-- Device Status : BEGIN -->
-        <tr>
-        <td style="padding: 20px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #ffffff;">
-            <div style="display:inline-block; margin: 0 -1px; width:100%; min-width:200px; max-width:330px; vertical-align:top;"
+   $DeviceDetailsHtml = @"
+    <!-- Device Details HTML Start -->
+    <tr>
+        <td align="center" valign="top" style="font-size:0; padding-bottom: 10px; background-color: #222222;">
+            <div style="display:inline-block; margin: 0 -1px; width:100%; min-width:200px; vertical-align:top;"
                 class="stack-column">
                 <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
                     <tr>
@@ -149,8 +149,15 @@ function Get-DRMMDeviceDetailsSection {
                                 <tr>
                                     <td style="font-family: sans-serif; font-size: 15px; line-height: 20px; color: #ffffff; padding-top: 10px;"
                                         class="stack-column-center">
-                                        <h2>CPU Usage $($CPUUse)%</h2>
-                                        $CPUTable
+                                        <ul>
+                                            <li>Device name: <strong>$($Device.hostname)</strong></li>
+                                            <li>Site: <strong>$($Device.siteName)</strong></li>
+                                            <li>User: <strong>$($Device.lastLoggedInUser)</strong></li>
+                                            <li>Last Reboot: <strong>$([datetime]$origin = '1970-01-01 00:00:00';
+                                                    $origin.AddMilliSeconds($Device.lastReboot))</strong></li>
+                                            <li>Internal IP: <strong>$($Device.intIpAddress)</strong></li>
+                                            <li>External IP: <strong>$($Device.extIpAddress)</strong></li>
+                                        </ul>
                                     </td>
                                 </tr>
                             </table>
@@ -158,32 +165,9 @@ function Get-DRMMDeviceDetailsSection {
                     </tr>
                 </table>
             </div>
-            <div style="display:inline-block; margin: 0 -1px; width:100%; min-width:200px; max-width:330px; vertical-align:top;"
-                class="stack-column">
-                <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
-                    <tr>
-                        <td style="padding: 10px;">
-                            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%"
-                                style="font-size: 14px;text-align: left;">
-                                <tr>
-                                    <td style="font-family: sans-serif; font-size: 15px; line-height: 20px; color: #ffffff; padding-top: 10px;"
-                                        class="stack-column-center">
-                                        <h2>RAM Usage $($RAMUse)%</h2>
-                                        $RAMTable
-                                    </td>
-                                </tr>
-                            </table>
-                        </td>
-                    </tr>
-                </table>
-            </div>
-            <div style="padding: 10px 10px 0px 10px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #ffffff;">
-                <h2>Disk Use</h3>
-                    $DiskHTML
-            </div>
-            </td>
-        </tr>
-        <!-- Device Status : END -->   
+        </td>
+    </tr>
+    <!-- Device Details HTML End -->
 "@
 
     $DeviceDetailsSection = @{
