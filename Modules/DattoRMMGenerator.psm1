@@ -136,57 +136,54 @@ function Get-DRMMDeviceDetailsSection {
 
 
     $DeviceDetailsHtml = @"
-    <!-- Device Status : BEGIN -->
-<tr>
-    <td style="padding: 20px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #ffffff; background-color: #222222;">
-        <!-- Create a table for side-by-side CPU and RAM Usage -->
-        <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="table-layout: fixed;">
-            <tr>
-                <!-- CPU Usage Table -->
-                <td width="50%" style="padding-right: 10px; vertical-align: top;">
-                    <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="font-size: 14px; text-align: left;">
-                        <tr>
-                            <td style="padding: 10px;">
-                                <h2 style="color: #ffffff; margin-bottom: 5px;">CPU Usage $($CPUUse)%</h2>
-                                <table style="font-family: sans-serif; font-size: 15px; line-height: 20px; color: #ffffff; width: 100%;">
-                                    <!-- Insert CPU table data here -->
-                                    $CPUTable
-                                </table>
-                            </td>
-                        </tr>
-                    </table>
-                </td>
-                
-                <!-- RAM Usage Table -->
-                <td width="50%" style="padding-left: 10px; vertical-align: top;">
-                    <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="font-size: 14px; text-align: left;">
-                        <tr>
-                            <td style="padding: 10px;">
-                                <h2 style="color: #ffffff; margin-bottom: 5px;">RAM Usage $($RAMUse)%</h2>
-                                <table style="font-family: sans-serif; font-size: 15px; line-height: 20px; color: #ffffff; width: 100%;">
-                                    <!-- Insert RAM table data here -->
-                                    $RAMTable
-                                </table>
-                            </td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-        </table>
-    </td>
-</tr>
-
-<!-- Disk Usage Table Below -->
-<tr>
-    <td style="padding: 20px 20px 10px 20px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #ffffff; background-color: #222222;">
-        <h2 style="color: #ffffff; margin-bottom: 5px;">Disk Usage</h2>
-        <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="font-family: sans-serif; font-size: 15px; line-height: 20px; color: #ffffff;">
-            <!-- Insert Disk table data here -->
-            $DiskHTML
-        </table>
-    </td>
-</tr>
-<!-- Device Status : END -->
+   <!-- Device Status : BEGIN -->
+        <tr>
+        <td style="padding: 20px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #ffffff;">
+            <div style="display:inline-block; margin: 0 -1px; width:100%; min-width:200px; max-width:330px; vertical-align:top;"
+                class="stack-column">
+                <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                    <tr>
+                        <td style="padding: 10px;">
+                            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%"
+                                style="font-size: 14px; text-align: left;">
+                                <tr>
+                                    <td style="font-family: sans-serif; font-size: 15px; line-height: 20px; color: #ffffff; padding-top: 10px;"
+                                        class="stack-column-center">
+                                        <h2>CPU Usage $($CPUUse)%</h2>
+                                        $CPUTable
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div style="display:inline-block; margin: 0 -1px; width:100%; min-width:200px; max-width:330px; vertical-align:top;"
+                class="stack-column">
+                <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                    <tr>
+                        <td style="padding: 10px;">
+                            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%"
+                                style="font-size: 14px;text-align: left;">
+                                <tr>
+                                    <td style="font-family: sans-serif; font-size: 15px; line-height: 20px; color: #ffffff; padding-top: 10px;"
+                                        class="stack-column-center">
+                                        <h2>RAM Usage $($RAMUse)%</h2>
+                                        $RAMTable
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div style="padding: 10px 10px 0px 10px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #ffffff;">
+                <h2>Disk Use</h3>
+                    $DiskHTML
+            </div>
+            </td>
+        </tr>
+        <!-- Device Status : END -->   
 "@
 
     $DeviceDetailsSection = @{
