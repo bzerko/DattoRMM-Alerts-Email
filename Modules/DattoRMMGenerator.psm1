@@ -64,39 +64,43 @@ function Get-DRMMAlertDetailsSection {
         </td>
     </tr>
 
-    <tr>
-    <td align="center" valign="top" style="font-size:0; background-color: #222222; padding-bottom: 20px;">
-        $DocLinkHTML
-        <div style="display:inline-block; margin: 2px; max-width: 128px; min-width:100px; vertical-align:top;"
-            class="stack-column">
-            <a class="button-a button-a-primary" target="_blank"
-                href="https://$($DattoPlatform)rmm.centrastage.net/alert/$($Alert.alertUid)"
-                style="background: #333333; border: 1px solid #000000; font-family: sans-serif; font-size: 15px; line-height: 15px; text-decoration: none; padding: 13px 17px; color: #ffffff; display: block; border-radius: 4px;">View
-                Alert</a>
-        </div>
-        <div style="display:inline-block; margin: 2px; max-width: 128px; min-width:100px; vertical-align:top;"
-            class="stack-column">
-            <a class="button-a button-a-primary" target="_blank"
-                href="https://$($DattoPlatform)rmm.centrastage.net/device/$($Device.id)/$($Device.hostname)"
-                style="background: #333333; border: 1px solid #000000; font-family: sans-serif; font-size: 15px; line-height: 15px; text-decoration: none; padding: 13px 17px; color: #ffffff; display: block; border-radius: 4px;">View
-                Device</a>
-        </div>
-        <div style="display:inline-block; margin: 2px; max-width: 128px; min-width:100px; vertical-align:top;"
-            class="stack-column">
-            <a class="button-a button-a-primary" target="_blank"
-                href="https://$($DattoPlatform)rmm.centrastage.net/site/$($Device.siteId)"
-                style="background: #333333; border: 1px solid #000000; font-family: sans-serif; font-size: 15px; line-height: 15px; text-decoration: none; padding: 13px 17px; color: #ffffff; display: block; border-radius: 4px;">View
-                Site</a>
-        </div>
-        <div style="display:inline-block; margin: 2px; max-width: 128px; min-width:100px; vertical-align:top;"
-            class="stack-column">
-            <a class="button-a button-a-primary" target="_blank"
-                href="https://$($DattoPlatform).centrastage.net/csm/remote/rto/$($Device.id)"
-                style="background: #333333; border: 1px solid #000000; font-family: sans-serif; font-size: 15px; line-height: 15px; text-decoration: none; padding: 13px 17px; color: #ffffff; display: block; border-radius: 4px;">Web
-                Remote</a>
-        </div>
+<tr>
+    <td align="center" valign="top" style="background-color: #222222; padding-bottom: 20px;">
+        <table border="0" cellspacing="0" cellpadding="0" align="center" style="width: auto;">
+            <tr>
+                <td style="padding: 0 5px;">
+                    <a class="button-a button-a-primary" target="_blank"
+                        href="https://$($DattoPlatform)rmm.centrastage.net/alert/$($Alert.alertUid)"
+                        style="background: #333333; border: 1px solid #000000; font-family: sans-serif; font-size: 15px; line-height: 15px; text-decoration: none; padding: 13px 17px; color: #ffffff; display: block; border-radius: 4px;">
+                        View Alert
+                    </a>
+                </td>
+                <td style="padding: 0 5px;">
+                    <a class="button-a button-a-primary" target="_blank"
+                        href="https://$($DattoPlatform)rmm.centrastage.net/device/$($Device.id)/$($Device.hostname)"
+                        style="background: #333333; border: 1px solid #000000; font-family: sans-serif; font-size: 15px; line-height: 15px; text-decoration: none; padding: 13px 17px; color: #ffffff; display: block; border-radius: 4px;">
+                        View Device
+                    </a>
+                </td>
+                <td style="padding: 0 5px;">
+                    <a class="button-a button-a-primary" target="_blank"
+                        href="https://$($DattoPlatform)rmm.centrastage.net/site/$($Device.siteId)"
+                        style="background: #333333; border: 1px solid #000000; font-family: sans-serif; font-size: 15px; line-height: 15px; text-decoration: none; padding: 13px 17px; color: #ffffff; display: block; border-radius: 4px;">
+                        View Site
+                    </a>
+                </td>
+                <td style="padding: 0 5px;">
+                    <a class="button-a button-a-primary" target="_blank"
+                        href="https://$($DattoPlatform).centrastage.net/csm/remote/rto/$($Device.id)"
+                        style="background: #333333; border: 1px solid #000000; font-family: sans-serif; font-size: 15px; line-height: 15px; text-decoration: none; padding: 13px 17px; color: #ffffff; display: block; border-radius: 4px;">
+                        Web Remote
+                    </a>
+                </td>
+            </tr>
+        </table>
     </td>
 </tr>
+
 
 
     
