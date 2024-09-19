@@ -195,22 +195,20 @@ function Get-DRMMDeviceStatusSection {
     $DiskData = $DeviceAudit.logicalDisks | where-object { $_.freespace }
 
     # Build the HTML for Disk Usage
-	$DiskRaw = foreach ($Disk in $DiskData) {
-    $Total = [math]::round($Disk.size / 1024 / 1024 / 1024, 2)
-    $Free = [math]::round($Disk.freespace / 1024 / 1024 / 1024, 2)
-    $Used = [math]::round($Total - $Free, 2)
-    $UsedPercent = if ($Total -ne 0) { [math]::round(($Used / $Total) * 100, 2) } else { 0 }
-    $UsedPercent = if ($UsedPercent -gt 100) { 100 } elseif ($UsedPercent -lt 0) { 0 } else { $UsedPercent }
-
-    @"
-    $($Disk.diskIdentifier) $($UsedPercent)% Used - $($Free)GB Free
-    <svg width='100%' height='65px'>
-        <g class='bars'>
-            <rect fill='#3d5599' width='100%' height='25'></rect>;
-            <rect fill='#cb4d3e' width='$($UsedPercent)%' height='25'></rect>
-        </g>
-    </svg>
-    "@
+  $DiskRaw = foreach ($Disk in $DiskData) {
+        $Total = [math]::round($Disk.size / 1024 / 1024 / 1024, 2)
+        $Free = [math]::round($Disk.freespace / 1024 / 1024 / 1024, 2)
+        $Used = [math]::round($Total - $Free, 2)
+        $UsedPercent = [math]::round(($Used / $Total) * 100, 2)
+        @"
+        $($Disk.diskIdentifier) $($Used)% Used - $($Free)GB Free
+        <svg width='100%' height='65px'>
+            <g class='bars'>
+                <rect fill='#3d5599' width='100%' height='25'></rect>;
+                <rect fill='#cb4d3e' width='$($UsedPercent)%' height='25'></rect>
+            </g>
+        </svg>
+"@
     }
 
     $DiskHTML = $DiskRaw -join ''
