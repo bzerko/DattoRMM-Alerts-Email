@@ -189,8 +189,42 @@ function Get-DRMMDeviceStatusSection {
     $CPUUse = $CPUData.T
     $RAMUse = $RAMData.T
 
-    $CPUTable = Get-DecodedTable -TableString $CPUData.D -UseValue '%' | ConvertTo-Html -Fragment
-    $RAMTable = Get-DecodedTable -TableString $RAMData.D -UseValue 'GBs' | ConvertTo-Html -Fragment
+ # Update these sections with better table formatting and spacing
+    $CPUTable = @"
+    <table role='presentation' cellspacing='0' cellpadding='5' border='0' width='100%' style='font-size: 14px; text-align: left;'>
+        <thead>
+            <tr>
+                <th style='font-family: sans-serif; font-size: 15px; line-height: 20px; color: #ffffff;'>Application</th>
+                <th style='font-family: sans-serif; font-size: 15px; line-height: 20px; color: #ffffff; padding-left: 20px;'>Use %</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td style='font-family: sans-serif; font-size: 14px; line-height: 20px; color: #ffffff;'>msedgewebview2</td>
+                <td style='font-family: sans-serif; font-size: 14px; line-height: 20px; color: #ffffff; padding-left: 20px;'>1.8</td>
+            </tr>
+            <!-- Add more rows dynamically as needed -->
+        </tbody>
+    </table>
+    "@
+
+    $RAMTable = @"
+    <table role='presentation' cellspacing='0' cellpadding='5' border='0' width='100%' style='font-size: 14px; text-align: left;'>
+        <thead>
+            <tr>
+                <th style='font-family: sans-serif; font-size: 15px; line-height: 20px; color: #ffffff;'>Application</th>
+                <th style='font-family: sans-serif; font-size: 15px; line-height: 20px; color: #ffffff; padding-left: 20px;'>Use GBs</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td style='font-family: sans-serif; font-size: 14px; line-height: 20px; color: #ffffff;'>opera</td>
+                <td style='font-family: sans-serif; font-size: 14px; line-height: 20px; color: #ffffff; padding-left: 20px;'>12.5</td>
+            </tr>
+            <!-- Add more rows dynamically as needed -->
+        </tbody>
+    </table>
+    "@
 
     $DiskData = $DeviceAudit.logicalDisks | Where-Object { $_.freespace }
 
@@ -207,7 +241,7 @@ function Get-DRMMDeviceStatusSection {
         }
 
         @"
-        <p>$($Disk.diskIdentifier): $UsedPercent% Used - $FreeGB GB Free</p>
+        <p>$($Disk.diskIdentifier) $UsedPercent% Used - $FreeGB GB Free</p>
         <table width='100%' style='border-collapse: collapse;'>
             <tr>
                 <td width='100%' style='background-color: #3d5599; height: 25px; padding: 0;'>
