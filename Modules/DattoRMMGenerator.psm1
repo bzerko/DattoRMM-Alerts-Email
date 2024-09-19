@@ -45,10 +45,10 @@ function Get-DRMMAlertDetailsSection {
         $DocLinkHTML = ''
     }
     
-    $Colour = Get-DRMMAlertColour -Piority $Alert.Priority
+    $Colour = Get-DRMMAlertColour -Priority $Alert.Priority
 
     $SectionHTML = @"
-    <!-- Alert Detaills HTML Start -->
+    <!-- Alert Details HTML Start -->
     <tr>
         <td style="padding: 20px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #ffffff;">
             <h1
@@ -183,50 +183,58 @@ function Get-DRMMDeviceStatusSection {
     )
 
     # Generate CPU/ RAM Use Data
-    $CPUData = $Device.udf."udf$CPUUDF" | convertfrom-json
-    $RAMData = $Device.udf."udf$RAMUDF" | convertfrom-json
+    $CPUData = $Device.udf."udf$CPUUDF" | ConvertFrom-Json
+    $RAMData = $Device.udf."udf$RAMUDF" | ConvertFrom-Json
 
     $CPUUse = $CPUData.T
     $RAMUse = $RAMData.T
 
-    $CPUTable = Get-DecodedTable -TableString $CPUData.D -UseValue '%' | convertto-html -Fragment
-    $RAMTable = Get-DecodedTable -TableString $RAMData.D -UseValue 'GBs' | convertto-html -Fragment
+    $CPUTable = Get-DecodedTable -TableString $CPUData.D -UseValue '%' | ConvertTo-Html -Fragment
+    $RAMTable = Get-DecodedTable -TableString $RAMData.D -UseValue 'GBs' | ConvertTo-Html -Fragment
 
-    $DiskData = $DeviceAudit.logicalDisks | where-object { $_.freespace }
+    $DiskData = $DeviceAudit.logicalDisks | Where-Object { $_.freespace }
 
-    # Build the HTML for Disk Usage
-  $DiskRaw = foreach ($Disk in $DiskData) {
-        $Total = [math]::round($Disk.size / 1024 / 1024 / 1024, 2)
-        $Free = [math]::round($Disk.freespace / 1024 / 1024 / 1024, 2)
-        $Used = [math]::round($Total - $Free, 2)
-        $UsedPercent = [math]::round(($Used / $Total) * 100, 2)
+    # Build the HTML for Disk Usage with Tables instead of SVG
+    $DiskRaw = foreach ($Disk in $DiskData) {
+        $TotalGB = [math]::round($Disk.size / 1GB, 2)
+        $FreeGB = [math]::round($Disk.freespace / 1GB, 2)
+        $UsedGB = [math]::round($TotalGB - $FreeGB, 2)
+        $UsedPercent = [math]::round(($UsedGB / $TotalGB) * 100, 2)
+
+        # Cap the percentage at 100
+        if ($UsedPercent -gt 100) {
+            $UsedPercent = 100
+        }
+
         @"
-        $($Disk.diskIdentifier) $($Used)% Used - $($Free)GB Free
-        <svg width='100%' height='65px'>
-            <g class='bars'>
-                <rect fill='#3d5599' width='100%' height='25'></rect>;
-                <rect fill='#cb4d3e' width='$($UsedPercent)%' height='25'></rect>
-            </g>
-        </svg>
+        <p>$($Disk.diskIdentifier): $UsedPercent% Used - $FreeGB GB Free</p>
+        <table width='100%' style='border-collapse: collapse;'>
+            <tr>
+                <td width='100%' style='background-color: #3d5599; height: 25px; padding: 0;'>
+                    <table width='$UsedPercent%' style='background-color: #cb4d3e; height: 25px; padding: 0;'>
+                        <tr><td></td></tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
 "@
     }
 
     $DiskHTML = $DiskRaw -join ''
+
+    # Construct the entire HTML email section
     $DeviceStatusHTML = @"
 
         <!-- Device Status : BEGIN -->
         <tr>
-        <td style="padding: 20px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #ffffff;">
-            <div style="display:inline-block; margin: 0 -1px; width:100%; min-width:200px; max-width:330px; vertical-align:top;"
-                class="stack-column">
-                <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+        <td style='padding: 20px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #ffffff;'>
+            <div style='display:inline-block; margin: 0 -1px; width:100%; min-width:200px; max-width:330px; vertical-align:top;' class='stack-column'>
+                <table role='presentation' cellspacing='0' cellpadding='0' border='0' width='100%'>
                     <tr>
-                        <td style="padding: 10px;">
-                            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%"
-                                style="font-size: 14px; text-align: left;">
+                        <td style='padding: 10px;'>
+                            <table role='presentation' cellspacing='0' cellpadding='0' border='0' width='100%' style='font-size: 14px; text-align: left;'>
                                 <tr>
-                                    <td style="font-family: sans-serif; font-size: 15px; line-height: 20px; color: #ffffff; padding-top: 10px;"
-                                        class="stack-column-center">
+                                    <td style='font-family: sans-serif; font-size: 15px; line-height: 20px; color: #ffffff; padding-top: 10px;' class='stack-column-center'>
                                         <h2>CPU Usage $($CPUUse)%</h2>
                                         $CPUTable
                                     </td>
@@ -236,16 +244,13 @@ function Get-DRMMDeviceStatusSection {
                     </tr>
                 </table>
             </div>
-            <div style="display:inline-block; margin: 0 -1px; width:100%; min-width:200px; max-width:330px; vertical-align:top;"
-                class="stack-column">
-                <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+            <div style='display:inline-block; margin: 0 -1px; width:100%; min-width:200px; max-width:330px; vertical-align:top;' class='stack-column'>
+                <table role='presentation' cellspacing='0' cellpadding='0' border='0' width='100%'>
                     <tr>
-                        <td style="padding: 10px;">
-                            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%"
-                                style="font-size: 14px;text-align: left;">
+                        <td style='padding: 10px;'>
+                            <table role='presentation' cellspacing='0' cellpadding='0' border='0' width='100%' style='font-size: 14px; text-align: left;'>
                                 <tr>
-                                    <td style="font-family: sans-serif; font-size: 15px; line-height: 20px; color: #ffffff; padding-top: 10px;"
-                                        class="stack-column-center">
+                                    <td style='font-family: sans-serif; font-size: 15px; line-height: 20px; color: #ffffff; padding-top: 10px;' class='stack-column-center'>
                                         <h2>RAM Usage $($RAMUse)%</h2>
                                         $RAMTable
                                     </td>
@@ -255,23 +260,23 @@ function Get-DRMMDeviceStatusSection {
                     </tr>
                 </table>
             </div>
-            <div style="padding: 10px 10px 0px 10px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #ffffff;">
-                <h2>Disk Use</h3>
-                    $DiskHTML
+            <div style='padding: 10px 10px 0px 10px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #ffffff;'>
+                <h2>Disk Use</h2>
+                $DiskHTML
             </div>
-            </td>
+        </td>
         </tr>
         <!-- Device Status : END -->        
 
 "@
 
+    # Add the Device Status section to the Sections collection
     $DeviceStatusSection = @{
         Heading = "Device Status"
         HTML    = $DeviceStatusHTML
     }
 
     $Sections.add($DeviceStatusSection)
-
 }
 
 function Get-DRMMAlertHistorySection {
